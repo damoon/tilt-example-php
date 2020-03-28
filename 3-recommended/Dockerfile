@@ -18,7 +18,9 @@ RUN php composer-setup.php
 RUN php -r "unlink('composer-setup.php');"
 RUN mv composer.phar /usr/local/bin/composer
 
-ADD composer.* .
+# adding composer.* invalidates docker's image layer cache
+ADD composer.json .
+ADD composer.lock .
 RUN composer install
 
 ADD . .
