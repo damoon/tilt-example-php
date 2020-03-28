@@ -8,6 +8,10 @@ ENV PHP_ENV $php_env
 WORKDIR /app
 
 RUN apt-get update
+
+RUN apt-get install -y libzip-dev zip
+RUN docker-php-ext-install zip
+
 RUN apt-get install -y git
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 RUN php composer-setup.php
