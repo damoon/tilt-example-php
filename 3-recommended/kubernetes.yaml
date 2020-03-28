@@ -1,20 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-python
+  name: example-php
   labels:
-    app: example-python
+    app: example-php
 spec:
   selector:
     matchLabels:
-      app: example-python
+      app: example-php
   template:
     metadata:
       labels:
-        app: example-python
+        app: example-php
     spec:
       containers:
-        - name: example-python
-          image: example-python-image
+        - name: example-nginx
+          image: example-nginx-image
           ports:
-            - containerPort: 8000
+            - containerPort: 80
+        - name: example-php
+          image: example-php-image
