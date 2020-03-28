@@ -14,9 +14,9 @@ spec:
         app: example-php
     spec:
       containers:
+        - name: example-php
+          image: example-php-image
         - name: example-nginx
           image: example-nginx-image
           ports:
             - containerPort: 80
-        - name: example-php
-          image: example-php-image
