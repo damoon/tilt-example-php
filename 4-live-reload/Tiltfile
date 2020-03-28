@@ -1,0 +1,38 @@
+
+k8s_yaml('kubernetes.yaml')
+k8s_resource('example-php', port_forwards='8000:80',
+             resource_deps=['deploy'])
+
+# Records the current time, then kicks off a server update.
+# Normally, you would let Tilt do deploys automatically, but this
+# shows you how to set up a custom workflow that measures it.
+local_resource(
+    'deploy',
+    'date +%s%N > start-time.txt',
+)
+
+# Add a live_update rule to our docker_build
+congrats = "🎉 Congrats, you ran a live_update! 🎉"
+docker_build('example-php-image', '.', build_args={'php_env': 'development'},
+    ignore=['nginx', 'vendor'],
+    live_update=[
+        sync('.', '/app'),
+        run('cd /app && composer install',
+            trigger=['composer.json', 'composer.lock']),
+
+        # trigger browser live reload
+        run('cd /app && date +%s%N > build.txt'),
+
+        # add a congrats message!
+        run('sed -i "s/Hello cats!/{}/g" /app/templates/index.html'.
+            format(congrats)),
+])
+
+docker_build('example-nginx-image', '.', dockerfile='nginx/Dockerfile',
+    only=['index.php', 'live-reload.php', 'static', 'nginx'],
+    live_update=[
+        sync('index.php', '/app/index.php'),
+        sync('live-reload.php', '/app/live-reload.php'),
+        sync('static', '/app/static'),
+    ]
+)

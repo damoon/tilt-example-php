@@ -1,0 +1,7 @@
+{
+    "name": "tilt-example-php",
+    "description": "Tilt example for php.",
+    "require": {
+        "monolog/monolog": "^1.0"
+    }
+}

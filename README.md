@@ -6,6 +6,8 @@ An example project that demonstrates how to use Tilt to develop on a PHP app.
 
 This is based on [tilt-example-python](https://github.com/windmilleng/tilt-example-python). Only the `3-recommended` example was ported.
 
+File changes trigger browser live reloading.
+
 ## License
 
 Copyright 2020 tilt.dev
